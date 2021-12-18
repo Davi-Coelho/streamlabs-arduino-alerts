@@ -1,0 +1,22 @@
+{
+  "name": "streamlabs-nodemcu-alerts",
+  "version": "1.0.0",
+  "description": "Alertas dos Streamlabs no NodeMCU",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Davi-Coelho/streamlabs-nodemcu-alerts.git"
+  },
+  "author": "Davi Coelho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Davi-Coelho/streamlabs-nodemcu-alerts/issues"
+  },
+  "homepage": "https://github.com/Davi-Coelho/streamlabs-nodemcu-alerts#readme",
+  "devDependencies": {
+    "electron": "^16.0.5"
+  }
+}
