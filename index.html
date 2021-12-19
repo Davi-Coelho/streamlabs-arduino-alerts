@@ -16,13 +16,29 @@
 
 <body>
     <h1 class="title">Streamlabs NodeMCU Alerts</h1>
-    <div class="alert">
-        <span class="close-btn-danger">&times;</span>
-        <strong>Erro!</strong> Selecione uma porta USB!
+    <div class="alert-disconnect">
+        <span class="close-btn-disconnect">&times;</span>
+        <strong>Desconectado!</strong>
     </div>
-    <div class="alert success">
+    <div class="alert-danger-usb">
+        <span class="close-btn-danger-usb">&times;</span>
+        <strong>Erro!</strong> Nenhuma porta USB detectada e/ou selecionada!
+    </div>
+    <div class="alert-danger-token">
+        <span class="close-btn-danger-token">&times;</span>
+        <strong>Erro!</strong> Token vazio ou inválido!
+    </div>
+    <div class="alert-danger-connection-usb">
+        <span class="close-btn-danger-connection-usb">&times;</span>
+        <strong>Erro na conexão USB!</strong>
+    </div>
+    <div class="alert-danger-connection-wss">
+        <span class="close-btn-danger-connection-wss">&times;</span>
+        <strong>Erro na conexão com o Streamlabs!</strong>
+    </div>
+    <div class="alert-success">
         <span class="close-btn-success">&times;</span>
-        <strong>Conectado com sucesso!</strong>
+        <strong>Conectado!</strong>
     </div>
     <div class="grid">
         <div class="data-usb">
@@ -30,15 +46,12 @@
                 <p class="label-general">Porta USB do</p>
                 <p class="label-general">NodeMCU:</p>
             </div>
-            <select class="select-usb" name="usbSelect" id="usbSelect">
-                <option value="1">-- Selecione uma porta --</option>
-            </select>
-            <i class="fas fa-circle connect-usb-light"></i>
+            <span class="label-usb">Nenhum Arduino Detectado...</span>
+            <button class="btn btn-primary btn-usb-detect">Detectar</button><br>
         </div>
         <div class="data-token">
             <p class="label-general">Socket Token: </p>
-            <textarea class="textarea-token" name="socketToken" id="socketToken" rows="6" cols="33"></textarea><br>
-            <i class="fas fa-circle connect-wss-light"></i>
+            <textarea class="textarea-token" name="socketToken" id="socket-token" rows="6" cols="35"></textarea><br>
         </div>
         <div class="data-button">
             <button class="btn btn-primary btn-wss-connect">Conectar</button><br>
