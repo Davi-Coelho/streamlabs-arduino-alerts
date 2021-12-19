@@ -16,22 +16,33 @@
 
 <body>
     <h1 class="title">Streamlabs NodeMCU Alerts</h1>
+    <div class="alert">
+        <span class="close-btn-danger">&times;</span>
+        <strong>Erro!</strong> Selecione uma porta USB!
+    </div>
+    <div class="alert success">
+        <span class="close-btn-success">&times;</span>
+        <strong>Conectado com sucesso!</strong>
+    </div>
     <div class="grid">
         <div class="data-usb">
             <div>
                 <p class="label-general">Porta USB do</p>
                 <p class="label-general">NodeMCU:</p>
             </div>
-            <select class="select-usb" name="usbSelect" id="usbSelect"></select>
+            <select class="select-usb" name="usbSelect" id="usbSelect">
+                <option value="1">-- Selecione uma porta --</option>
+            </select>
             <i class="fas fa-circle connect-usb-light"></i>
         </div>
         <div class="data-token">
             <p class="label-general">Socket Token: </p>
-            <textarea class="textarea-token" name="socketToken" id="socketToken" 
-                rows="6" cols="33"></textarea><br>
+            <textarea class="textarea-token" name="socketToken" id="socketToken" rows="6" cols="33"></textarea><br>
             <i class="fas fa-circle connect-wss-light"></i>
         </div>
-        <button class="btn btn-primary btn-wss-connect">Conectar</button><br>
+        <div class="data-button">
+            <button class="btn btn-primary btn-wss-connect">Conectar</button><br>
+        </div>
         <script text="text/javascript" src="./public/js/script.js"></script>
     </div>
 </body>

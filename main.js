@@ -14,7 +14,8 @@ const createWindow = () => {
     const mainWindow = new BrowserWindow({
         width: 1400,
         height: 600,
-        autoHideMenuBar: true
+        autoHideMenuBar: true,
+        resizable: false
     })
 
     mainWindow.loadFile('index.html')

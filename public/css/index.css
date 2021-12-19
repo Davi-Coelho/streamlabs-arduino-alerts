@@ -13,6 +13,37 @@ body {
     margin: 20px 0px;
 }
 
+.alert {
+    display: none;
+    padding: 20px;
+    width: 500px;
+    background-color: #F44336;
+    color: white;
+}
+
+.alert.success {
+    display: none;
+    padding: 20px;
+    width: 500px;
+    background-color: #04AA6D;
+    color: white;
+}
+
+.close-btn-danger, .close-btn-success {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn-danger:hover, .close-btn-success:hover {
+    color: black;
+}
+
 .grid {
     display: grid;
     width: 500px;
@@ -32,13 +63,22 @@ body {
     align-items: flex-start;
 }
 
+.data-usb {
+    align-items: center;
+}
+
 .label-general {
     color: white;
     margin: 0 5px;
 }
 
 .select-usb {
-
+    background-color: white;
+    margin: 0px 15px;
+    flex-grow: 2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align-last: center;
 }
 
 .textarea-token {
@@ -52,4 +92,20 @@ body {
 
 .connect-wss-light, .connect-usb-light {
     color: red;
+}
+
+.btn-wss-connect {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 40px;
+    margin-left: 95px;
+}
+
+.data-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
