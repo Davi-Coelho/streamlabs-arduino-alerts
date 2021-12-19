@@ -1,7 +1,7 @@
 {
-  "name": "streamlabs-nodemcu-alerts",
+  "name": "streamlabs-arduino-alerts",
   "version": "1.0.0",
-  "description": "Alertas dos Streamlabs no NodeMCU",
+  "description": "Alertas dos Streamlabs no Arduino",
   "main": "main.js",
   "scripts": {
     "start": "set NODE_ENV=development&&electron ."
