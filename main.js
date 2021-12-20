@@ -12,7 +12,7 @@ if (env === 'development') {
 
 const createWindow = () => {
     const mainWindow = new BrowserWindow({
-        width: 1400,
+        width: 800,
         height: 600,
         autoHideMenuBar: true,
         resizable: false
@@ -48,7 +48,7 @@ const createWindow = () => {
     })
 
     mainWindow.loadFile('index.html')
-    mainWindow.webContents.openDevTools()
+    // mainWindow.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
