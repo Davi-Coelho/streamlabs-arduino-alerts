@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu } = require('electron')
 const env = process.env.NODE_ENV || 'development';
 
 if (env === 'development') {
@@ -12,11 +12,13 @@ if (env === 'development') {
 
 const createWindow = () => {
     const mainWindow = new BrowserWindow({
-        width: 800,
+        width: 1400,
         height: 600,
         autoHideMenuBar: true,
         resizable: false
     })
+
+    mainWindow.setMenu(new Menu())
 
     mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
         event.preventDefault()
@@ -48,7 +50,7 @@ const createWindow = () => {
     })
 
     mainWindow.loadFile('index.html')
-    // mainWindow.webContents.openDevTools()
+    mainWindow.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {

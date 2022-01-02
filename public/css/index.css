@@ -1,82 +1,67 @@
 body {
+    display: grid;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    height: 100vh;
+    margin: 0;
+    background-color: #202020;
+    justify-content: center;
+    align-items: center;
+    grid-template-rows: 135px 1fr 30px;
+    user-select: none;
+}
+
+header {
     display: flex;
+    height: 100%;
+    width: 600px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    font-weight: 900;
+}
+
+article {
+    display: flex;
+    height: 90%;
+    width: 600px;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #333333;
+    border-radius: 10px;
+    gap: 20px;
+}
+
+footer {
+    display: flex;
+    font-size: 0.8em;
+    width: 600px;
+    height: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: 'Courier New', Courier, monospace;
-    height: 100vh;
-    background: linear-gradient(to right, rgb(82, 105, 118), rgb(41, 46, 73));
 }
 
-.title {
-    color: white;
-    margin: 20px 0px;
-}
-
-.alert-disconnect,
-.alert-danger-usb, 
-.alert-danger-token, 
-.alert-danger-connection-usb, 
-.alert-danger-connection-wss {
+.alert {
     display: none;
-    padding: 20px;
-    margin-bottom: 20px;
-    width: 500px;
-    background-color: #F44336;
+    font-size: 0.8em;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    border-radius: 10px;
+    padding: 15px;
+    width: 250px;
     color: white;
-}
-
-.alert-success {
-    display: none;
-    padding: 20px;
-    width: 500px;
-    background-color: #04AA6D;
-    color: white;
-}
-
-.close-btn-disconnect,
-.close-btn-danger-usb, 
-.close-btn-danger-token,
-.close-btn-danger-connection-usb,
-.close-btn-danger-connection-wss,
-.close-btn-success {
-    margin-left: 15px;
-    color: white;
-    font-weight: bold;
-    float: right;
-    font-size: 22px;
-    line-height: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.close-btn-disconnect:hover,
-.close-btn-danger-usb:hover, 
-.close-btn-danger-token:hover,
-.close-btn-danger-connection-usb:hover,
-.close-btn-danger-connection-wss:hover,
-.close-btn-success:hover {
-    color: black;
-}
-
-.grid {
-    display: grid;
-    width: 500px;
-    height: 250px;
-    row-gap: 20px;
-    grid-template-rows: 50px 50px 50px;
-    grid-template: 
-        "data-usb"
-        "data-token"
-        "btn-wss-connect";
 }
 
 .data-usb, 
 .data-token {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
 }
 
 .data-usb {
@@ -84,35 +69,46 @@ body {
 }
 
 .label-general {
-    color: white;
-    margin: 0 5px;
+    width: 110px;
+    word-wrap: break-word;
 }
 
 .label-usb {
+    font-size: 0.9em;
     color: red;
 }
 
 .textarea-token {
-    resize: none;
-    margin: 0 10px;
+    font-size: 1.3em;
+    caret-color: white;
+    color: transparent;
+    text-shadow: 0 0 8px rgb(189, 189, 189);
+    background-color: rgb(58, 58, 58);
     line-height: 1.5;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 1px 1px 1px #999;
+    outline: none;
+    resize: none;
 }
 
-.btn-wss-connect {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.btn-wss-connect, .btn-usb-detect {
+    color: white;
+    font-size: 0.9em;
+    font-weight: 800;
     width: 120px;
-    height: 40px;
-    margin-left: 95px;
+    height: 35px;
+    padding: 0;
+    background-color: #202020;
+    border: none;
+    border-radius: 20px;
+    transition: 0.3s;
 }
 
-.data-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.btn-wss-connect:hover, .btn-usb-detect:hover {
+    background-color: rgb(119, 119, 119);
+}
+
+.btn-usb-detect:disabled {
+    cursor: not-allowed;
 }
