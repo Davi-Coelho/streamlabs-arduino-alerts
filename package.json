@@ -18,7 +18,9 @@
   "homepage": "https://github.com/Davi-Coelho/streamlabs-arduino-alerts#readme",
   "devDependencies": {
     "electron": "^16.0.5",
-    "electron-reload": "^2.0.0-alpha.1",
     "electron-reloader": "^1.2.1"
+  },
+  "dependencies": {
+    "electron-store": "^8.0.1"
   }
 }

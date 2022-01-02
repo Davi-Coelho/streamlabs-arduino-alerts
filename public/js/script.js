@@ -18,6 +18,14 @@ const alertLabel = document.querySelector('.alert')
 btnWss.onclick = connectWss
 btnDetect.onclick = detectUsb
 
+async function loadToken() {
+    const token = await window.api.loadToken()
+
+    if(token) {
+        labelToken.value = token
+    }
+}
+
 async function connectWss() {
 
     await detectUsb()
@@ -35,15 +43,18 @@ async function connectWss() {
                 streamLabs.on('connect', async () => {
 
                     btnWss.innerHTML = 'Desconectar'
+                    btnWss.classList.add('connected')
                     labelToken.disabled = true
                     btnDetect.disabled = true
                     showAlert('Conectado!', false)
                     await connectUsb()
+                    window.api.saveToken(socketToken)
                 })
 
                 streamLabs.on('disconnect', async () => {
 
                     btnWss.innerHTML = 'Conectar'
+                    btnWss.classList.remove('connected')
                     showAlert('Erro na conexão com o Streamlabs!')
                     labelToken.disabled = false
                     btnDetect.disabled = false
@@ -101,6 +112,7 @@ async function connectWss() {
                 }
                 labelToken.disabled = false
                 btnDetect.disabled = false
+                btnWss.classList.remove('connected')
                 btnWss.innerHTML = 'Conectar'
                 showAlert('Desconectado!')
             }
@@ -240,3 +252,5 @@ function unfade(element) {
         opacity += opacity * 0.1
     }, 10)
 }
+
+loadToken()

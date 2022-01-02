@@ -1,5 +1,9 @@
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain } = require('electron')
+const Store = require('electron-store')
+const path = require('path')
 const env = process.env.NODE_ENV || 'development';
+
+const store = new Store()
 
 if (env === 'development') {
     try {
@@ -15,7 +19,10 @@ const createWindow = () => {
         width: 1400,
         height: 600,
         autoHideMenuBar: true,
-        resizable: false
+        resizable: false,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
     })
 
     mainWindow.setMenu(new Menu())
@@ -55,6 +62,17 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
     createWindow()
+
+    ipcMain.handle('store-save-token', (event, socketToken) => {
+
+        store.set('socketToken', socketToken)
+        return
+    })
+
+    ipcMain.handle('store-load-token', async (event) => {
+
+        return await store.get('socketToken')
+    })
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {

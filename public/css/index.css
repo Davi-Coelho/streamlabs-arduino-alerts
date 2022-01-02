@@ -103,6 +103,7 @@ footer {
     border: none;
     border-radius: 20px;
     transition: 0.3s;
+    cursor: pointer;
 }
 
 .btn-wss-connect:hover, .btn-usb-detect:hover {
@@ -111,4 +112,13 @@ footer {
 
 .btn-usb-detect:disabled {
     cursor: not-allowed;
+}
+
+.btn-wss-connect.connected {
+    background-color: red;
+    transition: 0.3s;
+}
+
+.btn-wss-connect.connected:hover {
+    background-color: rgb(129, 0, 0);
 }
