@@ -12,25 +12,37 @@
 </head>
 
 <body>
-    <header>
-        <h1 class="title">Streamlabs Arduino Alerts</h1>
-        <div class="alert"></div>
-    </header>
+    <div class="alert"></div>
+    <nav>
+        <button class="btn-nav-connection">Conexão</button>
+        <button class="btn-nav-commands">Comandos</button>
+    </nav>
     <article>
-        <div class="data-usb">
-            <span class="label-general">Porta USB do Arduino: </span>
-            <span class="label-usb">Nenhum Arduino detectado</span>
-            <button class="btn-usb-detect">Detectar</button>
-        </div>
-        <div class="data-token">
-            <span class="label-general">Socket Token: </span>
-            <textarea class="textarea-token" name="socketToken" id="socket-token" 
-                rows="6" cols="35" spellcheck="false"></textarea>
-        </div>
-        <button class="btn-wss-connect">Conectar</button>
-        <script text="text/javascript" src="./public/js/script.js"></script>
+        <section class="section-connection">
+            <div class="section-title">Conexão</div>
+            <div class="content">
+                <div class="data-usb">
+                    <span class="label-general">Porta USB do Arduino: </span>
+                    <span class="label-usb">Nenhum Arduino detectado</span>
+                    <button class="btn-usb-detect">Detectar</button>
+                </div>
+                <div class="data-token">
+                    <span class="label-general">Socket Token: </span>
+                    <textarea class="textarea-token" name="socketToken" id="socket-token" 
+                        rows="6" cols="35" spellcheck="false"></textarea>
+                </div>
+                <button class="btn-wss-connect">Conectar</button>
+            </div>
+        </section>
+        <section class="section-commands">
+            <div class="section-title">Comandos</div>
+            <div class="content">
+                
+            </div>
+        </section>
     </article>
     <footer>Desenvolvido por Davi Coelho</footer>
+    <script text="text/javascript" src="./public/js/script.js"></script>
 </body>
 
 </html>

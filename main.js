@@ -16,8 +16,8 @@ if (env === 'development') {
 
 const createWindow = () => {
     const mainWindow = new BrowserWindow({
-        width: 1400,
-        height: 600,
+        width: 1300,
+        height: 500,
         autoHideMenuBar: true,
         resizable: false,
         webPreferences: {

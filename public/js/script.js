@@ -14,7 +14,13 @@ const btnDetect = document.querySelector('.btn-usb-detect')
 const labelUsb = document.querySelector('.label-usb')
 const labelToken = document.querySelector('.textarea-token')
 const alertLabel = document.querySelector('.alert')
+const sectionConnection = document.querySelector('.section-connection')
+const sectionCommands = document.querySelector('.section-commands')
+const btnNavConnection = document.querySelector('.btn-nav-connection')
+const btnNavCommands = document.querySelector('.btn-nav-commands')
 
+btnNavConnection.onclick = () => loadSection(true)
+btnNavCommands.onclick = () => loadSection(false)
 btnWss.onclick = connectWss
 btnDetect.onclick = detectUsb
 
@@ -23,6 +29,17 @@ async function loadToken() {
 
     if(token) {
         labelToken.value = token
+    }
+}
+
+function loadSection(toggle) {
+    if(toggle) {
+        sectionConnection.style.display = 'grid'
+        sectionCommands.style.display = 'none'
+    }
+    else {
+        sectionConnection.style.display = 'none'
+        sectionCommands.style.display = 'grid'
     }
 }
 
