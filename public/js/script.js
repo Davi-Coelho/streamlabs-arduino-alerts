@@ -1,14 +1,12 @@
 var streamLabs = null
+let commands = []
 
 let port = null
-let reader = null
 let encoder = null
-let inputDone = null
 let outputDone = null
-let inputStream = null
 let outputStream = null
 
-const filters = [{ usbVendorId: 0x2341, usbProductId: 0x0043 }];
+const filters = [{usbVendorId: 0x2341, usbProductId: 0x0043}];
 const btnWss = document.querySelector('.btn-wss-connect')
 const btnDetect = document.querySelector('.btn-usb-detect')
 const labelUsb = document.querySelector('.label-usb')
@@ -18,26 +16,34 @@ const sectionConnection = document.querySelector('.section-connection')
 const sectionCommands = document.querySelector('.section-commands')
 const btnNavConnection = document.querySelector('.btn-nav-connection')
 const btnNavCommands = document.querySelector('.btn-nav-commands')
+const tableBody = document.querySelector('.table-body')
 
-btnNavConnection.onclick = () => loadSection(true)
-btnNavCommands.onclick = () => loadSection(false)
+btnNavConnection.onclick = loadSection
+btnNavCommands.onclick = loadSection
 btnWss.onclick = connectWss
 btnDetect.onclick = detectUsb
 
-async function loadToken() {
+async function loadConfig() {
     const token = await window.api.loadToken()
+    commands = await window.api.loadAllCommands()
 
-    if(token) {
+    if (token) {
         labelToken.value = token
     }
+
+    commands.forEach(command => {
+        const currentCommand = createCommandRow()
+        currentCommand.commandLabel.innerHTML = command.commandName
+        currentCommand.typeSelect.value = command.commandType
+    })
 }
 
-function loadSection(toggle) {
-    if(toggle) {
+function loadSection() {
+
+    if (this == btnNavConnection) {
         sectionConnection.style.display = 'grid'
         sectionCommands.style.display = 'none'
-    }
-    else {
+    } else if (this == btnNavCommands) {
         sectionConnection.style.display = 'none'
         sectionCommands.style.display = 'grid'
     }
@@ -55,7 +61,7 @@ async function connectWss() {
 
                 const socketToken = labelToken.value
 
-                streamLabs = io(`https://sockets.streamlabs.com?token=${socketToken}`, { transports: ['websocket'] })
+                streamLabs = io(`https://sockets.streamlabs.com?token=${socketToken}`, {transports: ['websocket']})
 
                 streamLabs.on('connect', async () => {
 
@@ -118,13 +124,11 @@ async function connectWss() {
                         }
                     }
                 })
-            }
-            else {
+            } else {
                 streamLabs.disconnect()
                 try {
                     await disconnectUsb()
-                }
-                catch (e) {
+                } catch (e) {
                     console.log(e)
                 }
                 labelToken.disabled = false
@@ -133,12 +137,10 @@ async function connectWss() {
                 btnWss.innerHTML = 'Conectar'
                 showAlert('Desconectado!')
             }
-        }
-        else {
+        } else {
             showAlert('Token vazio ou inválido!')
         }
-    }
-    else {
+    } else {
         showAlert('Erro! Nenhum Arduino detectado!')
     }
 }
@@ -146,11 +148,10 @@ async function connectWss() {
 async function detectUsb() {
 
     try {
-        port = await navigator.serial.requestPort({ filters })
+        port = await navigator.serial.requestPort({filters})
         labelUsb.style.color = 'green'
         labelUsb.textContent = 'Arduino Uno detectado!'
-    }
-    catch (e) {
+    } catch (e) {
         console.log(e)
         labelUsb.style.color = 'red'
         labelUsb.textContent = 'Nenhum Arduino detectado'
@@ -158,28 +159,12 @@ async function detectUsb() {
     }
 }
 
-async function clickConnect() {
-
-    if (port) {
-        try {
-            await disconnectUsb()
-        }
-        catch (e) {
-            console.log(e)
-        }
-        console.log('Desconectado!')
-        return
-    }
-    await connectUsb()
-}
-
 async function connectUsb() {
 
     try {
-        port = await navigator.serial.requestPort({ filters })
-        await port.open({ baudRate: 9600 })
-    }
-    catch (e) {
+        port = await navigator.serial.requestPort({filters})
+        await port.open({baudRate: 9600})
+    } catch (e) {
         console.log(e)
     }
 
@@ -198,8 +183,7 @@ async function disconnectUsb() {
         try {
             await outputStream.getWriter().close()
             await outputDone
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e)
         }
         outputStream = null
@@ -208,8 +192,7 @@ async function disconnectUsb() {
 
     try {
         await port.close()
-    }
-    catch (e) {
+    } catch (e) {
         console.log(e)
     }
     port = null
@@ -229,8 +212,7 @@ function showAlert(message, red = true) {
 
     if (red) {
         alertLabel.style.backgroundColor = '#F44336'
-    }
-    else {
+    } else {
         alertLabel.style.backgroundColor = '#04AA6D'
     }
     unfade(alertLabel)
@@ -270,4 +252,76 @@ function unfade(element) {
     }, 10)
 }
 
-loadToken()
+function createCommandRow() {
+
+    const rowIndex = tableBody.rows.length
+    const commandRow = tableBody.insertRow(rowIndex)
+
+    const commandCell = commandRow.insertCell(0)
+    const typeCell = commandRow.insertCell(1)
+    const actionCell = commandRow.insertCell(2)
+
+    const commandLabel = document.createElement('span')
+    const typeSelect = document.createElement('select')
+    const saveButton = document.createElement('button')
+    const editButton = document.createElement('button')
+
+    commandCell.style.textAlign = 'left'
+
+    saveButton.disabled = true
+    typeSelect.disabled = true
+
+    saveButton.onclick = () => saveCommand(commandRow, commandLabel, typeSelect, saveButton, editButton)
+    editButton.onclick = () => editCommand(typeSelect, saveButton, editButton)
+
+    typeSelect.classList.add('select-box')
+    saveButton.classList.add('btn-row-command')
+    editButton.classList.add('btn-row-command')
+
+    typeSelect.innerHTML = `<option value="2">ON/OFF  (1)</option>
+                            <option value="3">ON/OFF  (2)</option>
+                            <option value="4">Light   (1)</option>
+                            <option value="5">Light   (2)</option>
+                            <option value="6">Trigger (1)</option>
+                            <option value="7">Trigger (2)</option>`
+
+    saveButton.innerHTML = `<i class="fas fa-save" title="Salvar"></i>`
+    editButton.innerHTML = `<i class="fas fa-edit" title="Editar"></i>`
+
+    commandCell.appendChild(commandLabel)
+    typeCell.appendChild(typeSelect)
+    actionCell.appendChild(saveButton)
+    actionCell.appendChild(editButton)
+
+    return {commandRow, commandLabel, typeSelect, saveButton, editButton}
+}
+
+function saveCommand(commandRow, commandLabel, typeSelect, saveButton, editButton) {
+
+    const rowIndex = commandRow.rowIndex - 1
+    const command = commandLabel.innerHTML
+    const type = typeSelect.value
+    let hasType = commands.findIndex((el, i) => (el.commandType === type) && (i !== rowIndex))
+
+    if (hasType === -1) {
+
+        commands[rowIndex].commandName = command
+        commands[rowIndex].commandType = type
+        window.api.editCommand(rowIndex, commands[rowIndex])
+
+        typeSelect.disabled = true
+        saveButton.disabled = true
+        editButton.disabled = false
+    } else {
+        alert('Tipo já usado!')
+    }
+}
+
+function editCommand(typeSelect, saveButton, editButton) {
+
+    typeSelect.disabled = false
+    saveButton.disabled = false
+    editButton.disabled = true
+}
+
+loadConfig()

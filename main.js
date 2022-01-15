@@ -5,7 +5,16 @@ const env = process.env.NODE_ENV || 'development';
 
 const store = new Store()
 
+const defaultCommands = [
+    {commandName: 'Follow', commandType: '2'},
+    {commandName: 'Subscription/Resub', commandType: '3'},
+    {commandName: 'Host/Raid', commandType: '4'},
+    {commandName: 'Bits', commandType: '5'},
+    {commandName: 'Donation', commandType: '6'}
+]
+
 if (env === 'development') {
+
     try {
         require('electron-reloader')(module, {
             debug: true,
@@ -15,6 +24,7 @@ if (env === 'development') {
 }
 
 const createWindow = () => {
+
     const mainWindow = new BrowserWindow({
         width: 1300,
         height: 500,
@@ -60,8 +70,19 @@ const createWindow = () => {
     mainWindow.webContents.openDevTools()
 }
 
+const createCommands = () => {
+
+    const commands = store.get('commands')
+
+    if (!commands) {
+        store.set('commands', defaultCommands)
+    }
+}
+
 app.whenReady().then(() => {
+
     createWindow()
+    createCommands()
 
     ipcMain.handle('store-save-token', (event, socketToken) => {
 
@@ -71,10 +92,28 @@ app.whenReady().then(() => {
 
     ipcMain.handle('store-load-token', async (event) => {
 
-        return await store.get('socketToken')
+        return store.get('socketToken')
+    })
+
+    ipcMain.handle('store-load-commands', async (event) => {
+
+        return store.get('commands')
+    })
+
+    ipcMain.handle('store-edit-command', (event, commandIndex, command) => {
+
+        const commands = store.get('commands')
+
+        commands[commandIndex].commandName = command.commandName
+        commands[commandIndex].commandType = command.commandType
+
+        store.set('commands', commands)
+
+        return
     })
 
     app.on('activate', () => {
+
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow()
         }
@@ -82,6 +121,7 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => {
+
     if (process.platform !== 'darwin') {
         app.quit()
     }

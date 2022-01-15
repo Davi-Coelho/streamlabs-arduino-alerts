@@ -11,4 +11,14 @@ contextBridge.exposeInMainWorld('api', {
         
         return await ipcRenderer.invoke('store-load-token')
     },
+    loadAllCommands: () => {
+
+        return ipcRenderer.invoke('store-load-commands')
+    },
+    editCommand: (indexCommand, command) => {
+
+        ipcRenderer.invoke('store-edit-command', indexCommand, command)
+
+        return
+    }
 })

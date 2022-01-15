@@ -7,6 +7,7 @@
         content="default-src 'self' https:; script-src 'self' https:; connect-src wss:">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>Streamlabs Arduino Alerts</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="./public/css/index.css">
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js'></script>
 </head>
@@ -15,11 +16,13 @@
     <div class="alert"></div>
     <nav>
         <button class="btn-nav-connection">Conexão</button>
-        <button class="btn-nav-commands">Comandos</button>
+        <button class="btn-nav-commands">Comandos Padrão</button>
     </nav>
     <article>
         <section class="section-connection">
-            <div class="section-title">Conexão</div>
+            <div class="section-title">
+                <span>Conexão</span>
+            </div>
             <div class="content">
                 <div class="data-usb">
                     <span class="label-general">Porta USB do Arduino: </span>
@@ -28,21 +31,35 @@
                 </div>
                 <div class="data-token">
                     <span class="label-general">Socket Token: </span>
-                    <textarea class="textarea-token" name="socketToken" id="socket-token" 
-                        rows="6" cols="35" spellcheck="false"></textarea>
+                    <textarea class="textarea-token" name="socketToken" id="socket-token" rows="6" cols="35"
+                        spellcheck="false">
+                    </textarea>
                 </div>
                 <button class="btn-wss-connect">Conectar</button>
             </div>
         </section>
         <section class="section-commands">
-            <div class="section-title">Comandos</div>
+            <div class="section-title">
+                <span>Comandos Padrão</span>
+            </div>
             <div class="content">
-                
+                <table class="commands-table">
+                    <thead>
+                        <tr>
+                            <th>Comando</th>
+                            <th>Tipo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+
+                    </tbody>
+                </table>
             </div>
         </section>
     </article>
     <footer>Desenvolvido por Davi Coelho</footer>
-    <script text="text/javascript" src="./public/js/script.js"></script>
+    <script src="./public/js/script.js"></script>
 </body>
 
 </html>
