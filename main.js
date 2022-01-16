@@ -6,11 +6,12 @@ const env = process.env.NODE_ENV || 'development';
 const store = new Store()
 
 const defaultCommands = [
-    {commandName: 'Follow', commandType: '2'},
-    {commandName: 'Subscription/Resub', commandType: '3'},
-    {commandName: 'Host/Raid', commandType: '4'},
-    {commandName: 'Bits', commandType: '5'},
-    {commandName: 'Donation', commandType: '6'}
+    {commandName: 'Follow', commandType: '0'},
+    {commandName: 'Subscription', commandType: '0'},
+    {commandName: 'Resub', commandType: '0'},
+    {commandName: 'Host/Raid', commandType: '0'},
+    {commandName: 'Bits', commandType: '0'},
+    {commandName: 'Donation', commandType: '0'}
 ]
 
 if (env === 'development') {
@@ -42,7 +43,7 @@ const createWindow = () => {
         if (portList && portList.length > 0) {
             callback(portList[0].portId)
         } else {
-            callback('') //Could not find any matching devices
+            callback('')
         }
     })
 
@@ -91,12 +92,10 @@ app.whenReady().then(() => {
     })
 
     ipcMain.handle('store-load-token', async (event) => {
-
         return store.get('socketToken')
     })
 
     ipcMain.handle('store-load-commands', async (event) => {
-
         return store.get('commands')
     })
 

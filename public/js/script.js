@@ -6,7 +6,7 @@ let encoder = null
 let outputDone = null
 let outputStream = null
 
-const filters = [{usbVendorId: 0x2341, usbProductId: 0x0043}];
+const filters = [{ usbVendorId: 0x2341, usbProductId: 0x0043 }];
 const btnWss = document.querySelector('.btn-wss-connect')
 const btnDetect = document.querySelector('.btn-usb-detect')
 const labelUsb = document.querySelector('.label-usb')
@@ -43,7 +43,8 @@ function loadSection() {
     if (this == btnNavConnection) {
         sectionConnection.style.display = 'grid'
         sectionCommands.style.display = 'none'
-    } else if (this == btnNavCommands) {
+    }
+    else if (this == btnNavCommands) {
         sectionConnection.style.display = 'none'
         sectionCommands.style.display = 'grid'
     }
@@ -61,7 +62,7 @@ async function connectWss() {
 
                 const socketToken = labelToken.value
 
-                streamLabs = io(`https://sockets.streamlabs.com?token=${socketToken}`, {transports: ['websocket']})
+                streamLabs = io(`https://sockets.streamlabs.com?token=${socketToken}`, { transports: ['websocket'] })
 
                 streamLabs.on('connect', async () => {
 
@@ -88,59 +89,62 @@ async function connectWss() {
                     const event = eventData.message[0]
 
                     if (eventData.for === 'streamlabs' && eventData.type === 'donation') {
-                        writeToStream('donation')
+                        writeToStream(`${commands[5].commandType}-${event.formatted_amount}-${event.name}`)
                         console.log(`Muito obrigado pelo donate de ${event.formatted_amount}, ${event.name}!`)
-                        console.log(event.message)
                     }
+
                     if (eventData.for === 'twitch_account') {
                         switch (eventData.type) {
                             case 'follow':
-                                writeToStream('follow')
+                                writeToStream(`${commands[0].commandType}-${event.name}`)
                                 console.log(`Obrigado pelo follow ${event.name}!`)
                                 break
                             case 'subscription':
-                                writeToStream('subscription')
+                                writeToStream(`${commands[1].commandType}-${event.months}-${event.name}`)
                                 console.log(`Muito obrigado pelo sub de ${event.months} meses, ${event.name}!`)
-                                console.log(event.message)
                                 break
                             case 'resub':
-                                writeToStream('resub')
+                                writeToStream(`${commands[2].commandType}-${event.streak_months}-${event.name}-${event.months}`)
                                 console.log(`Muito obrigado pela sequência de ${event.streak_months} meses, ${event.name}! Um total de ${event.months}!`)
-                                console.log(event.message)
                                 break
                             case 'host':
-                                writeToStream('host')
+                                writeToStream(`${commands[3].commandType}-${event.viewers}-${event.name}`)
                                 console.log(`Muito obrigado pelo host de ${event.viewers} viewers, ${event.name}!`)
                                 break
-                            case 'bits':
-                                writeToStream('bits')
-                                console.log(`Obrigado pelos ${event.amount} bits, ${event.name}!!!`)
-                                console.log(event.message)
-                                break
                             case 'raid':
-                                writeToStream('raid')
+                                writeToStream(`${commands[3].commandType}-${event.raiders}-${event.name}`)
                                 console.log(`Muito obrigado pela raid de ${event.raiders} raiders, ${event.name}!`)
+                                break
+                            case 'bits':
+                                writeToStream(`${commands[4].commandType}-${event.amount}-${event.name}`)
+                                console.log(`Obrigado pelos ${event.amount} bits, ${event.name}!!!`)
                                 break
                         }
                     }
                 })
-            } else {
+            }
+            else {
+
                 streamLabs.disconnect()
+
                 try {
                     await disconnectUsb()
                 } catch (e) {
                     console.log(e)
                 }
+
                 labelToken.disabled = false
                 btnDetect.disabled = false
                 btnWss.classList.remove('connected')
                 btnWss.innerHTML = 'Conectar'
                 showAlert('Desconectado!')
             }
-        } else {
+        }
+        else {
             showAlert('Token vazio ou inválido!')
         }
-    } else {
+    }
+    else {
         showAlert('Erro! Nenhum Arduino detectado!')
     }
 }
@@ -148,10 +152,11 @@ async function connectWss() {
 async function detectUsb() {
 
     try {
-        port = await navigator.serial.requestPort({filters})
+        port = await navigator.serial.requestPort({ filters })
         labelUsb.style.color = 'green'
         labelUsb.textContent = 'Arduino Uno detectado!'
-    } catch (e) {
+    }
+    catch (e) {
         console.log(e)
         labelUsb.style.color = 'red'
         labelUsb.textContent = 'Nenhum Arduino detectado'
@@ -162,9 +167,10 @@ async function detectUsb() {
 async function connectUsb() {
 
     try {
-        port = await navigator.serial.requestPort({filters})
-        await port.open({baudRate: 9600})
-    } catch (e) {
+        port = await navigator.serial.requestPort({ filters })
+        await port.open({ baudRate: 9600 })
+    }
+    catch (e) {
         console.log(e)
     }
 
@@ -183,7 +189,8 @@ async function disconnectUsb() {
         try {
             await outputStream.getWriter().close()
             await outputDone
-        } catch (e) {
+        }
+        catch (e) {
             console.log(e)
         }
         outputStream = null
@@ -192,9 +199,11 @@ async function disconnectUsb() {
 
     try {
         await port.close()
-    } catch (e) {
+    }
+    catch (e) {
         console.log(e)
     }
+
     port = null
     console.log('Desconectado!')
 }
@@ -212,12 +221,16 @@ function showAlert(message, red = true) {
 
     if (red) {
         alertLabel.style.backgroundColor = '#F44336'
-    } else {
+    }
+    else {
         alertLabel.style.backgroundColor = '#04AA6D'
     }
+
     unfade(alertLabel)
     alertLabel.innerHTML = `<strong>${message}</strong>`
+
     setTimeout(() => {
+
         fade(alertLabel)
     }, 2000);
 }
@@ -278,7 +291,8 @@ function createCommandRow() {
     saveButton.classList.add('btn-row-command')
     editButton.classList.add('btn-row-command')
 
-    typeSelect.innerHTML = `<option value="2">ON/OFF  (1)</option>
+    typeSelect.innerHTML = `<option value="0" selected>Choose a option</option>
+                            <option value="2">ON/OFF  (1)</option>
                             <option value="3">ON/OFF  (2)</option>
                             <option value="4">Light   (1)</option>
                             <option value="5">Light   (2)</option>
@@ -293,7 +307,7 @@ function createCommandRow() {
     actionCell.appendChild(saveButton)
     actionCell.appendChild(editButton)
 
-    return {commandRow, commandLabel, typeSelect, saveButton, editButton}
+    return { commandRow, commandLabel, typeSelect, saveButton, editButton }
 }
 
 function saveCommand(commandRow, commandLabel, typeSelect, saveButton, editButton) {
@@ -301,10 +315,13 @@ function saveCommand(commandRow, commandLabel, typeSelect, saveButton, editButto
     const rowIndex = commandRow.rowIndex - 1
     const command = commandLabel.innerHTML
     const type = typeSelect.value
-    let hasType = commands.findIndex((el, i) => (el.commandType === type) && (i !== rowIndex))
+    let hasType = commands.findIndex((el, i) =>
+        (el.commandType === type) && (el.commandType != '0') && (i !== rowIndex)
+    )
+    console.log(rowIndex)
+    console.log(hasType)
 
     if (hasType === -1) {
-
         commands[rowIndex].commandName = command
         commands[rowIndex].commandType = type
         window.api.editCommand(rowIndex, commands[rowIndex])
@@ -312,8 +329,18 @@ function saveCommand(commandRow, commandLabel, typeSelect, saveButton, editButto
         typeSelect.disabled = true
         saveButton.disabled = true
         editButton.disabled = false
-    } else {
-        alert('Tipo já usado!')
+    }
+    else if (confirm(`Esse tipo já está sendo usado no comando ${commands[hasType].commandName}. Deseja sobrescrever o outro comando?`)) {
+        commands[rowIndex].commandType = type
+        commands[hasType].commandType = '0'
+
+        window.api.editCommand(rowIndex, commands[rowIndex])
+        window.api.editCommand(hasType, commands[hasType])
+        tableBody.rows[hasType].cells[1].firstElementChild.value = '0'
+
+        typeSelect.disabled = true
+        saveButton.disabled = true
+        editButton.disabled = false
     }
 }
 
