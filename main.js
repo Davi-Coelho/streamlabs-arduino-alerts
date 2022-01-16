@@ -39,6 +39,7 @@ const createWindow = () => {
     mainWindow.setMenu(new Menu())
 
     mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
+
         event.preventDefault()
         if (portList && portList.length > 0) {
             callback(portList[0].portId)
@@ -56,12 +57,14 @@ const createWindow = () => {
     })
 
     mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
+
         if (permission === 'serial' && details.securityOrigin === 'file:///') {
             return true
         }
     })
 
     mainWindow.webContents.session.setDevicePermissionHandler((details) => {
+        
         if (details.deviceType === 'serial' && details.origin === 'file://') {
             return true
         }

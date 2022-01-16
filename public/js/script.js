@@ -24,6 +24,7 @@ btnWss.onclick = connectWss
 btnDetect.onclick = detectUsb
 
 async function loadConfig() {
+
     const token = await window.api.loadToken()
     commands = await window.api.loadAllCommands()
 
@@ -89,34 +90,34 @@ async function connectWss() {
                     const event = eventData.message[0]
 
                     if (eventData.for === 'streamlabs' && eventData.type === 'donation') {
-                        writeToStream(`${commands[5].commandType}-${event.formatted_amount}-${event.name}`)
+                        writeToStream(`0-${commands[5].commandType}-${event.formatted_amount}-${event.name}`)
                         console.log(`Muito obrigado pelo donate de ${event.formatted_amount}, ${event.name}!`)
                     }
 
                     if (eventData.for === 'twitch_account') {
                         switch (eventData.type) {
                             case 'follow':
-                                writeToStream(`${commands[0].commandType}-${event.name}`)
+                                writeToStream(`1-${commands[0].commandType}-${event.name}`)
                                 console.log(`Obrigado pelo follow ${event.name}!`)
                                 break
                             case 'subscription':
-                                writeToStream(`${commands[1].commandType}-${event.months}-${event.name}`)
+                                writeToStream(`2-${commands[1].commandType}-${event.months}-${event.name}`)
                                 console.log(`Muito obrigado pelo sub de ${event.months} meses, ${event.name}!`)
                                 break
                             case 'resub':
-                                writeToStream(`${commands[2].commandType}-${event.streak_months}-${event.name}-${event.months}`)
+                                writeToStream(`3-${commands[2].commandType}-${event.streak_months}-${event.name}-${event.months}`)
                                 console.log(`Muito obrigado pela sequência de ${event.streak_months} meses, ${event.name}! Um total de ${event.months}!`)
                                 break
                             case 'host':
-                                writeToStream(`${commands[3].commandType}-${event.viewers}-${event.name}`)
+                                writeToStream(`4-${commands[3].commandType}-${event.viewers}-${event.name}`)
                                 console.log(`Muito obrigado pelo host de ${event.viewers} viewers, ${event.name}!`)
                                 break
                             case 'raid':
-                                writeToStream(`${commands[3].commandType}-${event.raiders}-${event.name}`)
+                                writeToStream(`5-${commands[3].commandType}-${event.raiders}-${event.name}`)
                                 console.log(`Muito obrigado pela raid de ${event.raiders} raiders, ${event.name}!`)
                                 break
                             case 'bits':
-                                writeToStream(`${commands[4].commandType}-${event.amount}-${event.name}`)
+                                writeToStream(`6-${commands[4].commandType}-${event.amount}-${event.name}`)
                                 console.log(`Obrigado pelos ${event.amount} bits, ${event.name}!!!`)
                                 break
                         }
